@@ -1,83 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { assignments } from './data/assignments';
-import { menu } from './data/canteenMenu';
-import { events as rawEvents } from './data/events';
-import { notifications } from './data/notifications';
+import React, { useEffect } from 'react';
 import { AlertTriangle, ArrowRight, ArrowLeft, BarChart2, Bell, Book, BookOpen, Brain, Building2, Calendar, CalendarDays, Camera, Check, CheckCircle, CheckCircle2, ChefHat, ChevronRight, Circle, ClipboardList, Clock, Code2, Coffee, Crown, Database, Download, FileText, Flame, Folder, Gift, GlassWater, Globe, GraduationCap, Home, IdCard, Image, Landmark, Loader, MapPin, Medal, Menu, MessageCircle, Monitor, Paperclip, PenLine, Plus, Receipt, Sandwich, Scroll, Search, ShieldCheck, Soup, Star, Theater, Ticket, TrainFront, Trophy, Upload, Utensils, X, XCircle } from 'lucide-react';
 import './app.css';
 
-
 export default function App() {
-  const [cart, setCart] = useState([]);
-  const [coupon, setCoupon] = useState("");
-  const [discount, setDiscount] = useState(0);
-  const [eventsData, setEventsData] = useState(rawEvents);
-  
-  const [trainStatus, setTrainStatus] = useState(0); // 0: input, 1: submit, 2: verify, 3: approve, 4: download
-  
-  const [feedbackInput, setFeedbackInput] = useState("");
-  const [feedbacks, setFeedbacks] = useState([
-    { category: "Canteen", rating: 4, message: "Food quality improved", date: "Today" }
-  ]);
-
-  const [lostItems, setLostItems] = useState([
-    { item: "Wallet", location: "Library", contact: "Anonymous" }
-  ]);
-  const [lostInput, setLostInput] = useState("");
-  const [lostLocation, setLostLocation] = useState("");
-
-  const handleCanteenAdd = (item) => {
-    setCart([...cart, item]);
-    const countEl = document.querySelector('.cart-count');
-    if(countEl) countEl.textContent = `${cart.length + 1} items`;
-    
-    // Animate add button
-    const btnId = `btn-${item.id}`;
-    const btn = document.getElementById(btnId);
-    if(btn) {
-      btn.style.background = '#4ade80';
-      btn.style.color = '#000';
-      setTimeout(() => { btn.style.background = ''; btn.style.color = ''; }, 1200);
-    }
-  };
-
-  const cartTotal = cart.reduce((acc, curr) => acc + curr.price, 0);
-  const cartFinal = cartTotal > 0 ? cartTotal - (cartTotal * discount) : 0;
-
-  const handleCoupon = () => {
-    if(coupon.toUpperCase() === 'CAMPUS10') {
-      setDiscount(0.10);
-      alert('Coupon CAMPUS10 applied! 10% Off');
-    } else {
-      alert('Invalid coupon');
-    }
-  };
-
-  const handleEventJoin = (id) => {
-    setEventsData(eventsData.map(e => e.id === id ? { ...e, joined: !e.joined } : e));
-  };
-  
-  const handleTrainSubmit = () => {
-    setTrainStatus(1);
-    setTimeout(() => setTrainStatus(2), 1500);
-    setTimeout(() => setTrainStatus(3), 3000);
-  };
-  
-  const submitFeedback = () => {
-    if(!feedbackInput) return;
-    setFeedbacks([{ category: "General", rating: 5, message: feedbackInput, date: "Just now" }, ...feedbacks]);
-    setFeedbackInput("");
-    alert("Feedback submitted directly to admin panel.");
-  };
-
-  const submitLostItem = () => {
-    if(!lostInput || !lostLocation) return;
-    setLostItems([{ item: lostInput, location: lostLocation, contact: "You" }, ...lostItems]);
-    setLostInput("");
-    setLostLocation("");
-  };
-
-
   useEffect(() => {
     // Add app.js dynamically so its querySelectors work
     const script = document.createElement('script');
@@ -192,23 +117,39 @@ export default function App() {
           {/*  Today's Overview  */}
           <p className="section-label">Today's Schedule</p>
           <div className="schedule-list">
-            {[
-              { id: 1, time: "09:00", ampm: "AM", title: "Data Structures", subtitle: "Room 302 · Prof. Mehta", active: true },
-              { id: 2, time: "11:00", ampm: "AM", title: "OS Lab", subtitle: "Lab 1 · Prof. Singh", active: false },
-              { id: 3, time: "02:00", ampm: "PM", title: "DBMS", subtitle: "Room 401 · Prof. Joshi", active: false }
-            ].map(s => (
-              <div className="schedule-item" key={s.id}>
-                <div className="schedule-time">
-                  <span className="s-hour">{s.time}</span>
-                  <span className="s-ampm">{s.ampm}</span>
-                </div>
-                <div className={`schedule-dot ${s.active ? 'active-dot' : ''}`}></div>
-                <div className="schedule-info">
-                  <p className="s-title">{s.title}</p>
-                  <p className="s-sub">{s.subtitle}</p>
-                </div>
+            <div className="schedule-item">
+              <div className="schedule-time">
+                <span className="s-hour">09:00</span>
+                <span className="s-ampm">AM</span>
               </div>
-            ))}
+              <div className="schedule-dot active-dot"></div>
+              <div className="schedule-info">
+                <p className="s-title">Data Structures</p>
+                <p className="s-sub">Room 302 · Prof. Mehta</p>
+              </div>
+            </div>
+            <div className="schedule-item">
+              <div className="schedule-time">
+                <span className="s-hour">11:00</span>
+                <span className="s-ampm">AM</span>
+              </div>
+              <div className="schedule-dot"></div>
+              <div className="schedule-info">
+                <p className="s-title">OS Lab</p>
+                <p className="s-sub">Lab 1 · Prof. Singh</p>
+              </div>
+            </div>
+            <div className="schedule-item">
+              <div className="schedule-time">
+                <span className="s-hour">02:00</span>
+                <span className="s-ampm">PM</span>
+              </div>
+              <div className="schedule-dot"></div>
+              <div className="schedule-info">
+                <p className="s-title">DBMS</p>
+                <p className="s-sub">Room 401 · Prof. Joshi</p>
+              </div>
+            </div>
           </div>
 
           {/*  Notifications Preview  */}
@@ -261,15 +202,15 @@ export default function App() {
 
           {/*  Quiz Tab  */}
           <div className="tab-content active" id="tab-quiz">
-            <div className="challenge-card" onClick={() => window.navigate('screen-academic')} style={{cursor: 'pointer'}}>
-            <p className="challenge-label"><AlertTriangle size={14} style={{display: "inline", verticalAlign: "middle"}} /> Reminder</p>
-            <h3 className="challenge-title">{assignments[0]?.title} due {assignments[0]?.statusText}</h3>
-            <p className="challenge-desc">Check your academic panel for the complete details and deadlines.</p>
-            <div className="challenge-meta">
-              <span className="chip">Academics</span>
-              <span className="chip">{assignments[0]?.deadline}</span>
-            </div>
-            <div className="progress-wrap">
+            <div className="challenge-card">
+              <p className="challenge-label"><PenLine size={18} /> Daily Quiz</p>
+              <h3 className="challenge-title">Data Structures & Algorithms</h3>
+              <div className="challenge-meta">
+                <span className="chip">10 Questions</span>
+                <span className="chip">15 min</span>
+                <span className="chip" style={{borderColor: '#4ade80', color: '#4ade80'}}>+50 XP</span>
+              </div>
+              <div className="progress-wrap">
                 <div className="progress-label"><span>Daily Progress</span><span>0/10</span></div>
                 <div className="progress-bar">
                   <div className="progress-fill" style={{width: '0%'}}></div>
@@ -364,22 +305,37 @@ export default function App() {
           <div className="tab-content" id="tab-schedule">
             <p className="section-label">Upcoming Assignments</p>
             <div className="list-cards">
-              {assignments.map(a => (
-                <div className="list-card" key={a.id}>
-                  <div className="lc-left">
-                    <div className="lc-icon" style={{background: a.iconBg, color: a.iconColor}}>
-                      {a.iconName === 'AlertTriangle' && <AlertTriangle size={18} />}
-                      {a.iconName === 'Folder' && <Folder size={18} />}
-                      {a.iconName === 'FileText' && <FileText size={18} />}
-                    </div>
-                    <div>
-                      <p className="lc-title">{a.title}</p>
-                      <p className="lc-sub">{a.deadline}</p>
-                    </div>
+              <div className="list-card">
+                <div className="lc-left">
+                  <div className="lc-icon" style={{background: '#ff444422', color: '#ff4444'}}><AlertTriangle size={18} />
                   </div>
-                  <div className={`score-pill ${a.statusClass}`}>{a.statusText}</div>
+                  <div>
+                    <p className="lc-title">OS Assignment 3</p>
+                    <p className="lc-sub">Tomorrow · 11:59 PM</p>
+                  </div>
                 </div>
-              ))}
+                <div className="score-pill red">Urgent</div>
+              </div>
+              <div className="list-card">
+                <div className="lc-left">
+                  <div className="lc-icon" style={{background: '#f9731622', color: '#f97316'}}><Folder size={18} /></div>
+                  <div>
+                    <p className="lc-title">DBMS Mini Project</p>
+                    <p className="lc-sub">Mar 18 · 11:59 PM</p>
+                  </div>
+                </div>
+                <div className="score-pill yellow">Soon</div>
+              </div>
+              <div className="list-card">
+                <div className="lc-left">
+                  <div className="lc-icon" style={{background: '#4ade8022', color: '#4ade80'}}><FileText size={18} /></div>
+                  <div>
+                    <p className="lc-title">CN Report</p>
+                    <p className="lc-sub">Mar 25 · 11:59 PM</p>
+                  </div>
+                </div>
+                <div className="score-pill green">On Track</div>
+              </div>
             </div>
 
             <p className="section-label">Weekly Timetable</p>
@@ -661,29 +617,29 @@ export default function App() {
                 <span><Paperclip size={18} /> Tap to upload PDF/Image</span>
               </div>
             </div>
-            <button className="btn-primary full-width" onClick={handleTrainSubmit}>Submit Application</button>
+            <button className="btn-primary full-width">Submit Application</button>
           </div>
 
           {/*  Progress Tracker  */}
           <p className="section-label">Application Status</p>
           <div className="tracker">
-            <div className={`tracker-step ${trainStatus >= 1 ? 'done' : ''}`}>
-              <div className="ts-dot">{trainStatus >= 1 ? <Check size={16} /> : <Circle size={10} strokeWidth={2} />}</div>
+            <div className="tracker-step done">
+              <div className="ts-dot"><Check size={16} /></div>
               <p>Submitted</p>
             </div>
-            <div className={`tracker-line ${trainStatus >= 1 ? 'done' : ''}`}></div>
-            <div className={`tracker-step ${trainStatus >= 2 ? 'done' : (trainStatus === 1 ? 'active' : '')}`}>
-              <div className={`ts-dot ${trainStatus === 1 ? 'pulsing' : ''}`}>{trainStatus >= 2 ? <Check size={16} /> : (trainStatus === 1 ? <Circle fill="currentColor" size={10} strokeWidth={0} /> : <Circle size={10} strokeWidth={2} />)}</div>
+            <div className="tracker-line done"></div>
+            <div className="tracker-step done">
+              <div className="ts-dot"><Check size={16} /></div>
               <p>Verification</p>
             </div>
-            <div className={`tracker-line ${trainStatus >= 2 ? 'done' : ''}`}></div>
-            <div className={`tracker-step ${trainStatus >= 3 ? 'done' : (trainStatus === 2 ? 'active' : '')}`}>
-              <div className={`ts-dot ${trainStatus === 2 ? 'pulsing' : ''}`}>{trainStatus >= 3 ? <Check size={16} /> : (trainStatus === 2 ? <Circle fill="currentColor" size={10} strokeWidth={0} /> : <Circle size={10} strokeWidth={2} />)}</div>
+            <div className="tracker-line done"></div>
+            <div className="tracker-step active">
+              <div className="ts-dot pulsing"><Circle fill="currentColor" size={10} strokeWidth={0} /></div>
               <p>Approval</p>
             </div>
-            <div className={`tracker-line ${trainStatus >= 3 ? 'done' : ''}`}></div>
-            <div className={`tracker-step ${trainStatus === 3 ? 'active' : ''}`}>
-              <div className={`ts-dot ${trainStatus === 3 ? 'empty' : 'empty'}`}>{trainStatus === 3 ? <Circle fill="currentColor" size={10} strokeWidth={0} /> : <Circle size={10} strokeWidth={2} />}</div>
+            <div className="tracker-line"></div>
+            <div className="tracker-step">
+              <div className="ts-dot empty"><Circle size={10} strokeWidth={2} /></div>
               <p>Download</p>
             </div>
           </div>
@@ -835,28 +791,49 @@ export default function App() {
           </div>
 
           <div className="menu-grid">
-            {menu.map(item => (
-              <div className="menu-item" key={item.id}>
-                <div className="menu-img">
-                  {item.icon === 'Soup' && <Soup size={32} />}
-                  {item.icon === 'ChefHat' && <ChefHat size={32} />}
-                  {item.icon === 'Sandwich' && <Sandwich size={32} />}
-                  {item.icon === 'Coffee' && <Coffee size={32} />}
-                  {item.icon === 'GlassWater' && <GlassWater size={32} />}
-                  {item.icon === 'Utensils' && <Utensils size={32} />}
-                </div>
-                <p className="menu-name">{item.name}</p>
-                <p className="menu-price">₹{item.price}</p>
-                <button className="add-btn" id={`btn-${item.id}`} onClick={() => handleCanteenAdd(item)}><Plus size={16} /></button>
-              </div>
-            ))}
+            <div className="menu-item">
+              <div className="menu-img"><Soup size={18} /></div>
+              <p className="menu-name">Veg Thali</p>
+              <p className="menu-price">₹60</p>
+              <button className="add-btn"><Plus size={16} /></button>
+            </div>
+            <div className="menu-item">
+              <div className="menu-img"><ChefHat size={18} /></div>
+              <p className="menu-name">Paneer Rice</p>
+              <p className="menu-price">₹55</p>
+              <button className="add-btn"><Plus size={16} /></button>
+            </div>
+            <div className="menu-item">
+              <div className="menu-img"><Sandwich size={18} /></div>
+              <p className="menu-name">Sandwich</p>
+              <p className="menu-price">₹30</p>
+              <button className="add-btn"><Plus size={16} /></button>
+            </div>
+            <div className="menu-item">
+              <div className="menu-img"><Coffee size={18} /></div>
+              <p className="menu-name">Tea / Coffee</p>
+              <p className="menu-price">₹15</p>
+              <button className="add-btn"><Plus size={16} /></button>
+            </div>
+            <div className="menu-item">
+              <div className="menu-img"><GlassWater size={18} /></div>
+              <p className="menu-name">Juice</p>
+              <p className="menu-price">₹25</p>
+              <button className="add-btn"><Plus size={16} /></button>
+            </div>
+            <div className="menu-item">
+              <div className="menu-img"><Utensils size={18} /></div>
+              <p className="menu-name">Vada Pav</p>
+              <p className="menu-price">₹20</p>
+              <button className="add-btn"><Plus size={16} /></button>
+            </div>
           </div>
 
           {/*  Cart summary  */}
           <div className="cart-bar">
             <div className="cart-info">
-              <span className="cart-count" id="cart-count-view">{cart.length} items</span>
-              <span className="cart-price" id="cart-price-view">₹{cartFinal.toFixed(0)}</span>
+              <span className="cart-count">2 items</span>
+              <span className="cart-price">₹85</span>
             </div>
             <button className="btn-primary" onClick={() => window.navigate('screen-canteen-bill')}>View Cart →</button>
           </div>
@@ -875,21 +852,17 @@ export default function App() {
           {/*  Coupon Section  */}
           <p className="section-label"><Ticket size={18} /> Apply Coupon</p>
           <div className="coupon-row">
-            <input className="coupon-input" placeholder="Enter coupon code (CAMPUS10)" value={coupon} onChange={(e) => setCoupon(e.target.value)} />
-            <button className={`coupon-apply ${discount > 0 ? "active-coupon" : ""}`} onClick={handleCoupon}>
-              {discount > 0 ? <>Applied <Check size={16} style={{display: "inline", verticalAlign: "middle"}} /></> : "Apply"}
-            </button>
+            <input className="coupon-input" placeholder="Enter coupon code" value="CAMPUS10" />
+            <button className="coupon-apply active-coupon">Applied <Check size={16} style={{display: "inline", verticalAlign: "middle"}} /></button>
           </div>
-          {discount > 0 && (
-            <div className="coupon-applied-card">
-              <div className="coupon-icon"><Gift size={18} /></div>
-              <div>
-                <p className="coupon-name">CAMPUS10 – 10% Off</p>
-                <p className="coupon-sub">Student discount applied</p>
-              </div>
-              <p className="coupon-save">−₹{(cartTotal * discount).toFixed(2)}</p>
+          <div className="coupon-applied-card">
+            <div className="coupon-icon"><Gift size={18} /></div>
+            <div>
+              <p className="coupon-name">CAMPUS10 – 10% Off</p>
+              <p className="coupon-sub">Student discount applied</p>
             </div>
-          )}
+            <p className="coupon-save">−₹8.50</p>
+          </div>
 
           {/*  My Coupons  */}
           <p className="section-label">My Coupons</p>
@@ -920,16 +893,12 @@ export default function App() {
           {/*  Bill  */}
           <p className="section-label">Bill Details</p>
           <div className="bill-card">
-            {cart.map((item, idx) => (
-              <div className="bill-row" key={idx}><span>{item.name} x 1</span><span>₹{item.price.toFixed(2)}</span></div>
-            ))}
-            
-            <div className="bill-row"><span>Sub Total</span><span>₹{cartTotal.toFixed(2)}</span></div>
-            {discount > 0 && (
-              <div className="bill-row discount"><span>Coupon Discount</span><span>−₹{(cartTotal * discount).toFixed(2)}</span></div>  
-            )}
+            <div className="bill-row"><span>Veg Thali × 1</span><span>₹60.00</span></div>
+            <div className="bill-row"><span>Sandwich × 1</span><span>₹30.00</span></div>
+            <div className="bill-row"><span>Sub Total</span><span>₹90.00</span></div>
+            <div className="bill-row discount"><span>Coupon Discount (CAMPUS10)</span><span>−₹9.00</span></div>
             <div className="bill-divider"></div>
-            <div className="bill-row total"><span>Total</span><span>₹{cartFinal.toFixed(2)}</span></div>
+            <div className="bill-row total"><span>Total</span><span>₹81.00</span></div>
             <div className="bill-row"><span>Token No.</span><span className="token-ref">#14</span></div>
           </div>
 
@@ -967,26 +936,35 @@ export default function App() {
             </div>
 
             <div className="event-list">
-              {eventsData.map(e => (
-                <div className="event-mini" key={e.id}>
-                  <div className="event-date-block">
-                    <span className="ed-day">{e.day}</span>
-                    <span className="ed-mon">{e.month}</span>
-                  </div>
-                  <div className="event-mini-body">
-                    <p className="event-mini-title">{e.title}</p>
-                    <p className="event-mini-sub">{e.sub}</p>
-                  </div>
-                  <button 
-                    className={`event-reg-btn ${e.joined ? 'registered' : ''}`}
-                    onClick={() => handleEventJoin(e.id)}
-                  >
-                    {e.joined ? <><Check size={16} style={{display: "inline", verticalAlign: "middle"}} /> Joined</> : 'Join'}
-                  </button>
+              <div className="event-mini">
+                <div className="event-date-block"><span className="ed-day">15</span><span className="ed-mon">MAR</span></div>
+                <div className="event-mini-body">
+                  <p className="event-mini-title">Tech Talk: AI in Healthcare</p>
+                  <p className="event-mini-sub">Seminar Hall · 2:00 PM · Free</p>
                 </div>
-              ))}
+                <button className="event-reg-btn">Join</button>
+              </div>
+              <div className="event-mini">
+                <div className="event-date-block"><span className="ed-day">17</span><span className="ed-mon">MAR</span></div>
+                <div className="event-mini-body">
+                  <p className="event-mini-title">Sports Day Registration</p>
+                  <p className="event-mini-sub">Ground · All Day</p>
+                </div>
+                <button className="event-reg-btn">Join</button>
+              </div>
+              <div className="event-mini">
+                <div className="event-date-block"><span className="ed-day">22</span><span className="ed-mon">MAR</span></div>
+                <div className="event-mini-body">
+                  <p className="event-mini-title">Photography Workshop</p>
+                  <p className="event-mini-sub">Art Room · 3:00 PM</p>
+                </div>
+                <button className="event-reg-btn registered">Joined <Check size={16} style={{display: "inline", verticalAlign: "middle"}} /></button>
+              </div>
             </div>
-            <p className="section-label">Campus Clubs</p>
+          </div>
+
+          {/*  Clubs Tab  */}
+          <div className="tab-content" id="tab-clubs">
             <div className="clubs-grid">
               <div className="club-card">
                 <div className="club-icon"><Code2 size={18} /></div>
@@ -1069,11 +1047,11 @@ export default function App() {
             </div>
             <div className="form-group">
               <label className="form-label">Item Name</label>
-              <input className="form-input" placeholder="e.g. Blue Water Bottle" value={lostInput} onChange={(e) => setLostInput(e.target.value)} />
+              <input className="form-input" placeholder="e.g. Blue Water Bottle" />
             </div>
             <div className="form-group">
               <label className="form-label">Location</label>
-              <input className="form-input" placeholder="e.g. Library, 1st Floor" value={lostLocation} onChange={(e) => setLostLocation(e.target.value)} />
+              <input className="form-input" placeholder="e.g. Library, 1st Floor" />
             </div>
             <div className="form-group">
               <label className="form-label">Upload Photo</label>
@@ -1081,7 +1059,7 @@ export default function App() {
                 <span><Camera size={18} /> Tap to add photo</span>
               </div>
             </div>
-            <button className="btn-primary full-width" onClick={submitLostItem}>Post Item</button>
+            <button className="btn-primary full-width">Post Item</button>
           </div>
 
           {/*  Active listings  */}
@@ -1142,7 +1120,7 @@ export default function App() {
 
             <div className="form-group" style={{marginTop: '16px'}}>
               <label className="form-label">Your Feedback</label>
-              <textarea className="form-input" rows="4" placeholder="Describe your experience..." value={feedbackInput} onChange={(e) => setFeedbackInput(e.target.value)}></textarea>
+              <textarea className="form-input" rows="4" placeholder="Describe your experience..."></textarea>
             </div>
 
             <div className="form-group">
@@ -1155,7 +1133,7 @@ export default function App() {
               <div className="toggle active"></div>
             </div>
 
-            <button className="btn-primary full-width" onClick={submitFeedback}>Submit Feedback</button>
+            <button className="btn-primary full-width">Submit Feedback</button>
           </div>
 
           <p className="section-label">My Past Feedback</p>
@@ -1248,15 +1226,30 @@ export default function App() {
         <div className="screen-scroll has-header">
           <p className="section-label">Today</p>
           <div className="notif-full-list">
-            {notifications.map((notif, idx) => (
-              <div className={`nf-item unread ${notif.type}`} key={idx}>
-                <div className="nf-body">
-                  <p className="nf-title">{notif.title}</p>
-                  <p className="nf-desc">{notif.sub}</p>
-                  <p className="nf-time">{notif.time}</p>
-                </div>
+            <div className="nf-item unread red">
+              <div className="nf-icon"><FileText size={18} /></div>
+              <div className="nf-body">
+                <p className="nf-title">Assignment Due Tomorrow!</p>
+                <p className="nf-desc">OS Assignment 3 is due by 11:59 PM tomorrow. Submit on time.</p>
+                <p className="nf-time">2 minutes ago</p>
               </div>
-            ))}
+            </div>
+            <div className="nf-item unread yellow">
+              <div className="nf-icon"><Utensils size={18} /></div>
+              <div className="nf-body">
+                <p className="nf-title">Canteen Order Ready</p>
+                <p className="nf-desc">Token #14 is ready for pickup at Counter 2.</p>
+                <p className="nf-time">15 minutes ago</p>
+              </div>
+            </div>
+            <div className="nf-item unread blue">
+              <div className="nf-icon"><CalendarDays size={18} /></div>
+              <div className="nf-body">
+                <p className="nf-title">Hackathon 2026 – Register Now</p>
+                <p className="nf-desc">Registration closes March 18. Don't miss out on ₹50,000 prize!</p>
+                <p className="nf-time">1 hour ago</p>
+              </div>
+            </div>
           </div>
 
           <p className="section-label">Yesterday</p>
