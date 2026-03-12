@@ -131,6 +131,9 @@ export default function App() {
       <div className="screen active" id="screen-home">
         <div className="screen-scroll">
           <div className="home-header">
+            <button className="fab-toggle-top" id="fabToggleHome" onClick={() => window.toggleExtraNav()} title="Menu">
+              <Menu size={28} />
+            </button>
             <div>
               <p className="greeting-sub">Good Morning</p>
               <h1 className="greeting-name">Rahul Sharma</h1>
@@ -1291,21 +1294,13 @@ export default function App() {
 
       {/*  ─── BOTTOM NAV ───  */}
       <nav className="bottom-nav">
+        <button className="nav-btn" onClick={() => window.navigate('screen-materials')} id="nav-materials">
+          <div className="nav-icon"><BookOpen size={18} /></div>
+          <span>Materials</span>
+        </button>
         <button className="nav-btn active" onClick={() => window.navigate('screen-home')} id="nav-home">
           <div className="nav-icon"><Home size={18} /></div>
           <span>Home</span>
-        </button>
-        <button className="nav-btn" onClick={() => window.navigate('screen-academic')} id="nav-academic">
-          <div className="nav-icon"><BookOpen size={18} /></div>
-          <span>Academics</span>
-        </button>
-        <button className="nav-btn" onClick={() => window.navigate('screen-canteen')} id="nav-canteen">
-          <div className="nav-icon"><Utensils size={18} /></div>
-          <span>Canteen</span>
-        </button>
-        <button className="nav-btn" onClick={() => window.navigate('screen-events')} id="nav-events">
-          <div className="nav-icon"><CalendarDays size={18} /></div>
-          <span>Events</span>
         </button>
         <button className="nav-btn" onClick={() => window.navigate('screen-notifications')} id="nav-notifs">
           <div className="nav-icon"><Bell size={18} /></div>
@@ -1313,22 +1308,18 @@ export default function App() {
         </button>
       </nav>
 
-      {/*  FAB for extra modules  */}
-      <button className="fab-toggle" id="fabToggle" onClick={() => window.toggleExtraNav()} title="More Modules"><Menu size={24} /></button>
+
 
       {/*  Floating menu for extra screens  */}
       <div className="floating-menu" id="extra-nav">
-        <button onClick={() => { window.navigate('screen-materials'); window.toggleExtraNav(); }}><BookOpen size={18} /> Study
-          Materials</button>
+        <button onClick={() => { window.navigate('screen-academic'); window.toggleExtraNav(); }}><BookOpen size={18} /> Academics</button>
+        <button onClick={() => { window.navigate('screen-canteen'); window.toggleExtraNav(); }}><Utensils size={18} /> Canteen</button>
+        <button onClick={() => { window.navigate('screen-events'); window.toggleExtraNav(); }}><CalendarDays size={18} /> Events</button>
         <button onClick={() => { window.navigate('screen-library'); window.toggleExtraNav(); }}><Landmark size={18} /> Library</button>
-        <button onClick={() => { window.navigate('screen-concession'); window.toggleExtraNav(); }}><TrainFront size={18} /> Train
-          Pass</button>
-        <button onClick={() => { window.navigate('screen-digital-id'); window.toggleExtraNav(); }}><IdCard size={18} /> Digital
-          ID</button>
-        <button onClick={() => { window.navigate('screen-lost-found'); window.toggleExtraNav(); }}><Search size={18} /> Lost &amp;
-          Found</button>
-        <button onClick={() => { window.navigate('screen-feedback'); window.toggleExtraNav(); }}><MessageCircle size={18} />
-          Feedback</button>
+        <button onClick={() => { window.navigate('screen-concession'); window.toggleExtraNav(); }}><TrainFront size={18} /> Train Pass</button>
+        <button onClick={() => { window.navigate('screen-digital-id'); window.toggleExtraNav(); }}><IdCard size={18} /> Digital ID</button>
+        <button onClick={() => { window.navigate('screen-lost-found'); window.toggleExtraNav(); }}><Search size={18} /> Lost &amp; Found</button>
+        <button onClick={() => { window.navigate('screen-feedback'); window.toggleExtraNav(); }}><MessageCircle size={18} /> Feedback</button>
         <button onClick={() => { window.navigate('screen-forms'); window.toggleExtraNav(); }}><ClipboardList size={18} /> Forms</button>
       </div>
 

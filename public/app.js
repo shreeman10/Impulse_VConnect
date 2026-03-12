@@ -40,10 +40,7 @@ function goBack() {
 function updateNavBar(screenId) {
   const map = {
     'screen-home': 'nav-home',
-    'screen-academic': 'nav-academic',
-    'screen-canteen': 'nav-canteen',
-    'screen-canteen-bill': 'nav-canteen',
-    'screen-events': 'nav-events',
+    'screen-materials': 'nav-materials',
     'screen-notifications': 'nav-notifs',
   };
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -188,23 +185,21 @@ document.querySelectorAll('.avail-label').forEach(lbl => {
 // ── FAB Extra Nav Toggle ──
 function toggleExtraNav() {
   const menu = document.getElementById('extra-nav');
-  const fab = document.getElementById('fabToggle');
   if (menu.classList.contains('open')) {
     menu.classList.remove('open');
-    fab.textContent = '☰';
   } else {
     menu.classList.add('open');
-    fab.textContent = '✕';
   }
 }
 
 // Close extra nav on outside click
 document.addEventListener('click', (e) => {
   const menu = document.getElementById('extra-nav');
-  const fab = document.getElementById('fabToggle');
-  if (!menu.contains(e.target) && e.target !== fab) {
-    menu.classList.remove('open');
-    fab.textContent = '☰';
+  const btn = document.getElementById('fabToggleHome');
+  if (menu && menu.classList.contains('open')) {
+    if (!menu.contains(e.target) && !btn?.contains(e.target)) {
+      menu.classList.remove('open');
+    }
   }
 });
 
